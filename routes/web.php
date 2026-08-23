@@ -15,9 +15,11 @@ use Illuminate\Support\Facades\Route;
 //     return view(view: 'dashboard');
 // })->middleware(middleware: ['auth', 'verified'])->name('dashboard');
 
+Route::middleware(['auth'])->group(function () {
 
-Route::get('/', [PostsController::class,'index'] )
-->name('dashboard');
+    Route::get('/', [PostsController::class,'index'] )
+    ->name('dashboard');
+});
 
 Route::get('/category/{category:slug}', [PostsController::class,'category'] )
 ->name('posts.byCategory');
@@ -34,11 +36,14 @@ Route::middleware(['auth', 'verified'])-> group(function () {
   // Route::get('/posts/{slug}', action: [PostsController::class,'show'] )
   // ->name('posts.show');
 
-  Route::get('/posts/edit/{slug}', [PostsController::class,'edit'] )
+  Route::get('/posts/{post:slug}/edit', [PostsController::class,'edit'] )
   ->name('posts.edit');
 
-  Route::get('/posts/update', [PostsController::class,'edit'] )
+  Route::put('/posts/{post}', [PostsController::class,'update'] )
   ->name('posts.update');
+
+  Route::delete('/posts/{post}', [PostsController::class,'destroy'] )
+  ->name('posts.destroy');
 
   // follow & unfollow route
   Route::post('/follow/{user}', [FollowController::class, 'toggle'])

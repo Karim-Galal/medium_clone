@@ -54,12 +54,15 @@ class PostsController extends Controller
         ]);
 
         # storing image in storage & db
-        if ($request->hasFile(key: 'image')) {
-            $data['image'] = $request->file('image')->store('uploads/posts', 'public');
-        }
+        // if ($request->hasFile(key: 'image')) {
+        //     $data['image'] = $request->file('image')->store('uploads/posts', 'public');
+        // }
+        // attach image using spatie medialibrary
+
 
 
         $data['slug'] = Str::slug($data['title']);
+
 
         // while (Post::where('slug', $data['slug'])->exists()) {
         //     $data['slug'] .= '-' . Str::random(5);
@@ -70,10 +73,14 @@ class PostsController extends Controller
         #create the post
         $post = Post::create($data);
 
+        if ($request->hasFile('image')) {
+            $post ->addMediaFromRequest('image')
+                  ->toMediaCollection('posts');
+        }
+
         # update to create the slug -> title-id
         $post->slug = Str::slug($post->title) . '-' . $post->id;
         $post->save();
-
 
 
         return redirect()->route('posts.show', ['user' =>$post->user->username , 'post' => $post->slug])
@@ -139,16 +146,19 @@ class PostsController extends Controller
         $post->save();
 
 
-        return redirect()->route('posts.show', $post->slug)
+        return redirect()->route('posts.show', ['user' =>$post->user->username , 'post' => $post->slug])
             ->with('success', 'Post updated successfully!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Post $post)
     {
-        //
+        if ( $post-> user_id != Auth::id() ) {
+
+          abort(403);
+        }
     }
 
 

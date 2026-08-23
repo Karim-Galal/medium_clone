@@ -4,8 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Post extends Model implements HasMedia
 {
@@ -20,7 +22,6 @@ class Post extends Model implements HasMedia
       'category_id',
       'user_id',
       'published_at',
-
     ];
 
     public function category() {
@@ -43,5 +44,32 @@ class Post extends Model implements HasMedia
     public function isLikedBy(User $user)
     {
       return $this->likes()->where('user_id', $user->id)->exists();
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this
+            ->addMediaCollection('posts') // collection name
+            ->useDisk('public')           // storage disk
+            ->singleFile();              // keep only the latest file
+
+           // ->useFallbackUrl('/images/default-post.png')
+            // ->useFallbackPath(public_path('images/default-post.png'))
+
+
+    }
+
+    public function registerMediaConversions(?Media $media = null): void
+    {
+
+        $this
+            -> addMediaConversion('preview')
+            -> width(400)
+            ->nonQueued();
+
+    }
+
+    public function imageUrl() {
+      return $this-> getFirstMedia('posts')?-> getUrl();
     }
 }

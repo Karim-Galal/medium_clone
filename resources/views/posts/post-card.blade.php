@@ -42,17 +42,18 @@
           {{ $post->created_at->format('M d, Y') }}
       </time>
         <span>·</span>
-        <span>
+        {{-- <span>
           <time datetime="{{ $post->created_at->toDateString() }}">
             {{ $post->created_at->format('M d, Y') }}
           </time>
-        </span>
+        </span> --}}
+
       </div>
     </div>
 
     <!-- Right side: thumbnail -->
       <div class="w-full md:w-40 flex-shrink-0">
-        <img src="{{ $post->image ?? 'https://dummyimage.com/40/9af4ac/gray&text=No+Image' }}"
+        <img src="{{ $post->imageUrl() ?? 'https://dummyimage.com/40/9af4ac/gray&text=No+Image' }}"
             alt="{{ $post->title }}"
             class="w-full h-28 object-cover rounded-md">
 

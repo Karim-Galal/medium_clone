@@ -1,5 +1,5 @@
 <div class="max-w-2xl mx-auto p-4">
-  
+
     <div class="flex flex-col md:flex-row gap-6 border-b border-gray-200 dark:border-gray-700 pb-6 mb-6">
 
       <!-- Left Content -->
@@ -26,9 +26,9 @@
 
       <!-- Thumbnail -->
       <div class="w-full md:w-40 flex-shrink-0">
-        <img src="{{ $post->image ?? 'https://dummyimage.com/40/9af4ac/gray&text=No+Image' }}"
-             alt="{{ $post->title }}"
-             class="w-full h-28 object-cover rounded-md">
+        <img src="{{ $post->imageUrl() ?? 'https://dummyimage.com/40/9af4ac/gray&text=No+Image' }}"
+            alt="{{ $post->title }}"
+            class="w-full h-28 object-cover rounded-md">
       </div>
 
     </div>

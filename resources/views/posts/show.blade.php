@@ -43,6 +43,27 @@
                         <x-follow-btn :user="$post->user"/>
                       </div>
                     </div>
+                    {{-- post controler --}}
+                    @if(Auth::check() && Auth::id() === $post->user_id)
+                      <div class="mt-5">
+
+                        {{-- Edit button --}}
+                        <a href="{{ route('posts.edit', $post->slug) }}">
+                            <x-primary-button class="bg-gray-800 hover:bg-gray-700 dark:bg-gray-200 dark:hover:bg-white">
+                                Edit
+                            </x-primary-button>
+                        </a>
+
+                          {{-- Delete button with confirm --}}
+                          <form action="{{ route('posts.destroy', $post->slug) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this post?');" class="inline-block">
+                              @csrf
+                              @method('DELETE')
+                              <x-danger-button class="bg-red-600 hover:bg-red-500">
+                                  Delete
+                              </x-danger-button>
+                          </form>
+                      </div>
+                    @endif
 
                     <!-- meta-actions   -->
                     @include('posts.post-meta-actions')
@@ -51,10 +72,21 @@
                     <hr class="my-8 border-gray-200 dark:border-gray-700">
 
                     <!-- Thumbnail -->
-                    @if($post->image)
+                    {{-- @if($post->image)
                       <div class="mb-6">
                         <img
                           src="{{ asset('storage/' . $post->image) }}"
+                          alt="{{ $post->title }}"
+                          class="w-full h-auto rounded-lg shadow"
+                        >
+                      </div>
+                    @endif --}}
+                    <!-- Thumbnail -->
+                    @if($post->getFirstMediaUrl('posts'))
+                      <div class="mb-6">
+                        <img
+                          {{-- src="{{ $post->getFirstMediaUrl('posts')}}" --}}
+                          src="{{ $post->imageUrl()}}"
                           alt="{{ $post->title }}"
                           class="w-full h-auto rounded-lg shadow"
                         >

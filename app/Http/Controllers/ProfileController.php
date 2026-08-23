@@ -33,16 +33,17 @@ class ProfileController extends Controller
         $data = $request->validated();
 
 
-        if ($request->hasFile(key: 'image')) {
+        // if ($request->hasFile(key: 'image')) {
 
-          if ($request->user()->image) {
-              Storage::disk('public')->delete($request->user()->image);
-          }
 
-          $image =  $data['image'];
+        //   if ($request->user()->image) {
+        //       Storage::disk('public')->delete($request->user()->image);
+        //   }
 
-          $data['image'] = $image->store('uploads/avatars', 'public');
-        }
+        //   $image =  $data['image'];
+
+        //   $data['image'] = $image->store('uploads/avatars', 'public');
+        // }
 
         // dd($data);
 
@@ -51,6 +52,11 @@ class ProfileController extends Controller
 
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
+        }
+
+        if ($request->hasFile('image')) {
+            $request->user()->addMediaFromRequest('image')
+                  ->toMediaCollection('avatars');
         }
 
         $request->user()->save();

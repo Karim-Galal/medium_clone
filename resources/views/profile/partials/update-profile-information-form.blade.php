@@ -18,14 +18,18 @@
         @method('patch')
 
         <div>
-            @if ($user->image)
-                <img src="{{ asset(path: 'storage/'.$user->image) }}" alt="Avatar" class="mt-2 w-20 h-20 rounded-full">
-            @endif
+          <div class="mt-4 pb-3">
 
+            @if ($user->imageUrl())
+                <img src="{{ $user->imageUrl() }}" alt="Avatar" class=" w-20 h-20 rounded-full">
+            @endif
+          </div>
+          <div>
             <x-input-label for="image" :value="__('Avatar')" />
             <x-text-input id="image" name="image" type="file" class="mt-1 block w-full"
-              :value="old('image', $user->image)"   autocomplete="image" />
+                autocomplete="image" />
             <x-input-error class="mt-2" :messages="$errors->get('image')" />
+          </div>
         </div>
 
         <div>

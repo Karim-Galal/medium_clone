@@ -11,7 +11,7 @@
 
               <div class="flex gap-4 ">
 
-                <div class="main relative dark:bg-gray-800 p-4 w-full md:w-[calc(100% - 352px)]">
+                <div class=" main relative dark:bg-gray-800 p-4 w-full md:w-[calc(100% - 352px)]">
                   {{-- in small screens --}}
                   <div class="sm-info md:hidden mb-5 flex justify-between items-center dark:text-white w-full">
 
@@ -69,7 +69,7 @@
                   <div class="text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700">
                       <ul class="flex flex-wrap -mb-px ">
                           <li class="me-2">
-                              <a href="#" class="inline-block p-4 border-b-2 border-gray-200 rounded-t-lg active hover:text-gray-600 hover:border-gray-300 dark:text-gray-300 aria-current="page"">Home</a>
+                              <a href="#" class="inline-block p-4 border-b-2 border-gray-200 rounded-t-lg active hover:text-gray-600 hover:border-gray-300 dark:text-gray-300" aria-current="page">Home</a>
                           </li>
                           <li class="me-2">
                               <a href="#" class="inline-block p-4 text-gray-600  rounded-t-lg  dark:text-gray-400 hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" >About</a>
@@ -80,9 +80,6 @@
                           {{-- display teh user's posts --}}
                           <div class="posts">
 
-                            {{-- @foreach ($posts as $post)
-                              @include('profile.profile-post-card', ['post' => $post])
-                              @endforeach --}}
 
                             @forelse ($posts as $post)
                               @include('profile.profile-post-card', ['post' => $post])
@@ -92,6 +89,9 @@
                               </div>
                             @endforelse
 
+                            <div class="pag flex flex-column justify-center mb-6">
+                              {{-- {{$posts-> onEachSide(1) ->links()}} --}}
+                            </div>
                           </div>
 
                         </div>

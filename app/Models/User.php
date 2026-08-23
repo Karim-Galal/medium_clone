@@ -9,11 +9,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail, HasMedia
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, InteractsWithMedia;
 
     /**
      * The attributes that are mass assignable.
@@ -89,4 +92,47 @@ class User extends Authenticatable implements MustVerifyEmail
       return $post->likes()->where('user_id', $this->id)->exists();
 
     }
+
+
+    public function registerMediaCollections(): void
+    {
+        $this
+            ->addMediaCollection('avatars')
+            ->useDisk('public')
+            ->singleFile();
+
+
+
+    }
+
+    public function registerMediaConversions(?Media $media = null): void
+      {
+          $this
+              ->addMediaConversion('thumb')
+              ->width(128)
+              ->height(128)
+              ->crop( 128, 128)
+              ->nonQueued();
+      }
+
+    public function imageUrl()
+    {
+        $media = $this->getFirstMedia('avatars');
+
+        if ($media) {
+            // return thumbnail if available
+            if ($media->hasGeneratedConversion('thumb')) {
+                return $media->getUrl('thumb');
+            }
+
+            // fallback: return original
+            return $media->getUrl();
+        }
+
+        // fallback if no avatar at all
+        // return asset('images/default-avatar.png');
+        return 'https://dummyimage.com/32/9af4ac/gray&text='.mb_substr(trim($this->name ), 0,1);
+    }
+
+
 }
