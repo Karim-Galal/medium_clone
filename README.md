@@ -50,6 +50,31 @@ The application allows users to create and publish articles, discover content by
 
 ---
 
+## Screenshots
+
+### Home
+
+![Medium Clone Home](screenshots/medium-clone-home.png)
+
+### Home with Sidebar
+
+![Medium Clone Home with Sidebar](screenshots/medium-clone-home-with-sidebar.png)
+
+### Read Article
+
+![Medium Clone Article](screenshots/medium-clone-read-article.png)
+
+### User Profile
+
+![Medium Clone Profile](screenshots/medium-clone-profile.png)
+
+### Mobile View
+
+![Medium Clone Mobile](screenshots/medium-clone-mobile-view.png)
+
+---
+
+
 ## Tech Stack
 
 ### Backend
